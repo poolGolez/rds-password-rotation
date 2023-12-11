@@ -1,16 +1,14 @@
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
+import * as ssm from "aws-cdk-lib/aws-ssm";
 
 export class RdsPasswordRotationStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-
-    // example resource
-    const queue = new sqs.Queue(this, 'RdsPasswordRotationQueue', {
-      visibilityTimeout: cdk.Duration.seconds(300)
+    const rdsPasswordParameter = new ssm.StringParameter(this, "RdsPassword", {
+      stringValue: "my-secret-password",
+      parameterName: "/rds-password-rotation-stack/dev/rds/password",
     });
   }
 }
