@@ -16,7 +16,7 @@ import {
   DatabaseInstanceEngine,
 } from "aws-cdk-lib/aws-rds";
 
-export class PostgresRds extends Construct {
+export default class PostgresRds extends Construct {
   constructor(scope: Construct, id: string, props: PostgresRdsProps) {
     super(scope, id);
 
@@ -35,7 +35,7 @@ export class PostgresRds extends Construct {
       securityGroups,
       credentials,
       removalPolicy: RemovalPolicy.DESTROY,
-      instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.NANO),
+      instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.MICRO),
       vpc: props.vpc,
       vpcSubnets: { subnetType: SubnetType.PUBLIC },
     });

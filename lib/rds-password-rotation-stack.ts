@@ -2,7 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as ssm from "aws-cdk-lib/aws-ssm";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { PostgresRds } from "./constructs/rds-construct";
+import PostgresRds from "./constructs/postgres-rds";
 
 export class RdsPasswordRotationStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
