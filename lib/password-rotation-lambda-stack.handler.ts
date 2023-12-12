@@ -4,7 +4,7 @@ import { SSMClient, PutParameterCommand } from "@aws-sdk/client-ssm";
 const client = new SSMClient({ region: "ap-southeast-1" });
 
 export const handler: Handler = async (event, context) => {
-  console.log("EVENT: \n" + JSON.stringify(event, null, 2));
+  console.debug("EVENT: \n" + JSON.stringify(event, null, 2));
   const password = generatePassword();
   const parameterName = process.env["PASSWORD_SSM_PARAM_NAME"];
 
@@ -14,9 +14,7 @@ export const handler: Handler = async (event, context) => {
     Overwrite: true,
   });
   const response = await client.send(command);
-  console.log("Parameter Store Version:", response.Version);
-
-  return context.logStreamName;
+  console.debug("New Parameter Version:", response.Version);
 };
 
 function generatePassword(): string {
