@@ -12,9 +12,11 @@ export default class PasswordRotationLambdaStack extends cdk.Stack {
     props: PasswordRotationLambdaStackProps
   ) {
     super(scope, id, props);
-
-    const lambda = new nodeJs.NodejsFunction(this, "handler");
     const { passwordParameter } = props;
+
+    const lambda = new nodeJs.NodejsFunction(this, "handler", {environment: {
+      PASSWORD_SSM_PARAM_NAME: passwordParameter.parameterName 
+    }});
     passwordParameter.grantWrite(lambda);
 
     const schedule = new events.Rule(this, "RotationSchedule", {
