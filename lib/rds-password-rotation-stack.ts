@@ -5,10 +5,12 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import PostgresRds from "./constructs/postgres-rds";
 
 export class RdsPasswordRotationStack extends cdk.Stack {
+  passwordParameter: ssm.StringParameter;
+
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const rdsPasswordParameter = new ssm.StringParameter(this, "RdsPassword", {
+     this.passwordParameter = new ssm.StringParameter(this, "RdsPassword", {
       stringValue: "change-me-now",
       parameterName: "/rds-password-rotation-stack/dev/rds/password",
     });
@@ -17,10 +19,9 @@ export class RdsPasswordRotationStack extends cdk.Stack {
       vpcId: "vpc-824693e4",
     });
 
-    const rds = new PostgresRds(this, 'Database', {
-      password: rdsPasswordParameter.stringValue,
-      vpc: vpc
-    })
-
+    const rds = new PostgresRds(this, "Database", {
+      password: this.passwordParameter.stringValue,
+      vpc: vpc,
+    });
   }
 }
