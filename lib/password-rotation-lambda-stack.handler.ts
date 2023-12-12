@@ -1,5 +1,6 @@
 import { Handler } from "aws-lambda";
 import { SSMClient, PutParameterCommand } from "@aws-sdk/client-ssm";
+import { randomUUID } from "crypto";
 
 const client = new SSMClient({ region: "ap-southeast-1" });
 
@@ -18,5 +19,5 @@ export const handler: Handler = async (event, context) => {
 };
 
 function generatePassword(): string {
-  return new Date().getTime().toString();
+  return randomUUID();
 }
