@@ -32,4 +32,5 @@ const dataStack = new RdsPasswordRotationStack(
 new PasswordRotationLambdaStack(app, "PasswordRotationStack", {
   env,
   passwordParameter: dataStack.passwordParameter,
+  dbInstance: dataStack.dbInstance,
 });

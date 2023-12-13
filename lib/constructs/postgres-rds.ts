@@ -17,6 +17,8 @@ import {
 } from "aws-cdk-lib/aws-rds";
 
 export default class PostgresRds extends Construct {
+  dbInstance: DatabaseInstance;
+
   constructor(scope: Construct, id: string, props: PostgresRdsProps) {
     super(scope, id);
 
@@ -25,11 +27,17 @@ export default class PostgresRds extends Construct {
       new SecretValue(props.password)
     );
 
-    const dbAccessSecGroup = new SecurityGroup(this, "DbAccess", { vpc: props.vpc });
-    dbAccessSecGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(5432), "Allow Postgress access");
+    const dbAccessSecGroup = new SecurityGroup(this, "DbAccess", {
+      vpc: props.vpc,
+    });
+    dbAccessSecGroup.addIngressRule(
+      Peer.anyIpv4(),
+      Port.tcp(5432),
+      "Allow Postgress access"
+    );
     const securityGroups = [dbAccessSecGroup];
 
-    new DatabaseInstance(this, id, {
+    this.dbInstance = new DatabaseInstance(this, id, {
       engine: DatabaseInstanceEngine.POSTGRES,
       databaseName: "app",
       securityGroups,
